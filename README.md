@@ -6,6 +6,13 @@ This app highlights how to release the camera when muting video in web video cha
 
 - A web browser
 
+## Code Highlights
+
+Pay particular attention to the streamCamera and muteCamera button click events, as well as the following Agora callbacks: 
+- rtc.client.on("stream-subscribed", function (evt) {})
+- rtc.client.on("stream-updated", function (evt) {})
+- rtc.client.on("mute-video", function (evt) {})
+
 ## Quick Start
 
 This section shows you how to prepare, and run the sample application.
