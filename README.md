@@ -1,6 +1,6 @@
 # agora-camera-release-js
 
-This app highlights how to release the camera when muting video in web video chat or broadcast scenarios.
+This highlights how to release the camera when muting video in an Agora integrated web application.
 
 ## Prerequisites
 
@@ -8,7 +8,7 @@ This app highlights how to release the camera when muting video in web video cha
 
 ## Code Highlights
 
-Pay particular attention to the streamCamera and muteCamera button click events, as well as the following Agora callbacks: 
+In *index.html*, pay particular attention to the streamCamera and muteCamera button click events, as well as the following Agora callbacks: 
 - rtc.client.on("stream-subscribed", function (evt) {})
 - rtc.client.on("stream-updated", function (evt) {})
 - rtc.client.on("mute-video", function (evt) {})
