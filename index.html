@@ -24,15 +24,15 @@
           <div class="row card-content" style="margin-bottom: 0px;">
               <div class="input-field">
                 <label for="appID" class="active">App ID</label>
-                <input type="text" placeholder="App ID" name="appID" value="5e589600bc6e49f6b447fa0ea8cede4e">
+                <input type="text" placeholder="App ID" name="appID">
               </div>
               <div class="input-field">
                 <label for="channel" class="active">Channel</label>
-                <input type="text" placeholder="channel" name="channel" value="demoroom">
+                <input type="text" placeholder="channel" name="channel">
               </div>
               <div class="input-field">
                 <label for="token" class="active">Token</label>
-                <input type="text" placeholder="token" name="token">
+                <input type="text" placeholder="token (if neeeded)" name="token">
               </div>
               <div class="row" style="margin: 0">
                 <div class="col s12">
@@ -438,7 +438,7 @@
      **/
     function join (rtc, option) {
         if (rtc.joined) {
-          Toast.error("Your already joined");
+          Toast.error("You are already joined");
           return;
         }
         rtc.params = option;
@@ -577,6 +577,11 @@
         e.preventDefault();
         var params = serializeformData();
         if (validator(params, fields)) {
+           if (!rtc.joined) {
+              Toast.error("You must be joined to stream camera");
+              return;
+           }
+
            // initialize the temp video stream (this is where getUserMedia is called under the hood)
            rtc.tempVideoStream.init(function () {
               console.log("init local stream success");
@@ -595,14 +600,19 @@
         e.preventDefault();
         var params = serializeformData();
         if (validator(params, fields)) {
-            // mute video so remote participants get notification, then immediately unmute
-            rtc.localStream.muteVideo();
-            rtc.localStream.unmuteVideo();
+           if (!rtc.joined) {
+              Toast.error("You must be joined to mute camera");
+              return;
+           }
 
-            // close the temp video stream, then remove track and stop local stream (order is important)
-            rtc.tempVideoStream.close();
-            rtc.localStream.removeTrack(rtc.localStream.getVideoTrack());
-            rtc.localStream.stop();
+           // mute video so remote participants get notification, then immediately unmute
+           rtc.localStream.muteVideo();
+           rtc.localStream.unmuteVideo();
+
+           // close the temp video stream, then remove track and stop local stream (order is important)
+           rtc.tempVideoStream.close();
+           rtc.localStream.removeTrack(rtc.localStream.getVideoTrack());
+           rtc.localStream.stop();
         }
       });
 
@@ -611,7 +621,11 @@
         e.preventDefault();
         var params = serializeformData();
         if (validator(params, fields)) {
-            rtc.localStream.unmuteAudio();
+           if (!rtc.joined) {
+              Toast.error("You must be joined to stream microphone");
+              return;
+           }
+           rtc.localStream.unmuteAudio();
         }
       });
 
@@ -620,7 +634,11 @@
         e.preventDefault();
         var params = serializeformData();
         if (validator(params, fields)) {
-            rtc.localStream.muteAudio();
+           if (!rtc.joined) {
+              Toast.error("You must be joined to mute microphone");
+              return;
+           }
+           rtc.localStream.muteAudio();
         }
       });
 
